@@ -21,8 +21,7 @@ describe Oystercard do
     it 'will decrease when fare is charged' do
       maximum_balance = Oystercard::MAXIMUM_BALANCE
       subject.top_up(maximum_balance)
-      new_balance = maximum_balance - 1
-      expect(subject.deduct(1)).to eq new_balance
+      expect{ subject.deduct 1}.to change{ subject.balance }.by -1
     end
   end
 end
