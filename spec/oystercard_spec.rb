@@ -24,4 +24,10 @@ describe Oystercard do
       expect{ subject.deduct 1}.to change{ subject.balance }.by -1
     end
   end
+
+  describe 'journey' do
+
+    it { is_expected.to respond_to(:in_journey?) }
+    
+  end
 end

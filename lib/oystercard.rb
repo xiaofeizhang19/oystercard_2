@@ -17,4 +17,7 @@ class Oystercard
     @balance -= fare
   end
 
+  def in_journey?
+  end
+
 end
