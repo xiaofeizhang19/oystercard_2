@@ -34,12 +34,17 @@ describe Oystercard do
       expect(subject.in_journey).to eq false
     end
 
-    it 'saves journey state on touch in' do
+    it 'raises error if balance is below minimum on touch in' do
+      expect {subject.touch_in}.to raise_error "Insufficient funds for journey" 
+    end
+
+    it 'saves journey state on touch-in' do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
       subject.touch_in
       expect(subject.in_journey).to eq true
     end
 
-    it 'saves journey state on touch in' do
+    it 'saves journey state on touch out' do
       subject.touch_out
       expect(subject.in_journey).to eq false
     end
