@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   let(:station){double :station}
+  # let(:station2){double :station2}
 
   describe 'card balance' do
 
@@ -37,20 +38,36 @@ describe Oystercard do
     end
 
     it 'saves journey state on touch out' do
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject.in_journey?).to eq false
     end
 
     it 'charges fare amount during touch out' do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
       subject.touch_in(station)
-      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
+      expect{ subject.touch_out(station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
     end
-  
+
     it 'stores entry station on touch in' do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
       subject.touch_in(station)
       expect(subject.entry_station).to eq(station)
-    end 
+    end
+  end
+
+  describe 'jouney history' do
+
+    it 'saves entry station to history' do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(station)
+      expect(subject.journey_list.last).to eq station
+    end
+
+    it 'saves exit station to history' do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(station)
+      subject.touch_out(station)
+      expect(subject.journey_list.last).to eq station
+    end
   end
 end
