@@ -27,7 +27,21 @@ describe Oystercard do
 
   describe 'journey' do
 
-    it { is_expected.to respond_to(:in_journey?) }
-    
+    it { is_expected.to respond_to(:touch_in) }
+    it { is_expected.to respond_to(:touch_out) }
+
+    it 'intializes in journey as false' do
+      expect(subject.in_journey).to eq false
+    end
+
+    it 'saves journey state on touch in' do
+      subject.touch_in
+      expect(subject.in_journey).to eq true
+    end
+
+    it 'saves journey state on touch in' do
+      subject.touch_out
+      expect(subject.in_journey).to eq false
+    end
   end
 end
