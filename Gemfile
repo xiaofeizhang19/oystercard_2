@@ -1,9 +1,15 @@
 source "https://rubygems.org"
 
-ruby '2.2.3'
+ruby "2.6.3"
 
-group :development, :test do
-  gem "rspec"
+group :test do
+  gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
+  gem 'rspec'
 end
 
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+group :development do
+  gem 'rspec'
+end
+
+gem 'rubocop', '0.71.0'
