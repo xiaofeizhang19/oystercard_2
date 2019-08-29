@@ -3,7 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   let(:station){double :station}
-  # let(:station2){double :station2}
+  let(:station2){double :station}
 
   describe 'card balance' do
 
@@ -22,6 +22,7 @@ describe Oystercard do
     end
   end
 
+
   describe 'journey' do
 
     it { is_expected.to respond_to(:touch_in) }
@@ -38,6 +39,8 @@ describe Oystercard do
     end
 
     it 'saves journey state on touch out' do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(station)
       subject.touch_out(station)
       expect(subject.in_journey?).to eq false
     end
@@ -57,17 +60,28 @@ describe Oystercard do
 
   describe 'jouney history' do
 
+    it 'has empty list of journeys by deafult' do
+      expect(subject.journey_list).to eq([])
+    end
+
     it 'saves entry station to history' do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
       subject.touch_in(station)
-      expect(subject.journey_list.last).to eq station
+      expect(subject.journey_list[-1][:entry]).to eq(station)
     end
 
     it 'saves exit station to history' do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
       subject.touch_in(station)
       subject.touch_out(station)
-      expect(subject.journey_list.last).to eq station
+      expect(subject.journey_list[-1][:exit]).to eq(station)
+    end
+
+    it 'creates a single journey' do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(station)
+      subject.touch_out(station)
+      expect(subject.journey_list[-1]).to include(:entry => station, :exit => station)
     end
   end
 end
