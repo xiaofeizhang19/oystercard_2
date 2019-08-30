@@ -3,16 +3,21 @@ class Journey
   attr_reader :entry_station
   attr_reader :exit_station
 
-  def enter(station_name)
-    @entry_station = station_name
+  def enter(entry_station = nil)
+    @entry_station = entry_station
   end
   
-  def exit(exit_stn)
-    @exit_station = exit_stn
+  def exit(exit_station = nil)
+    @exit_station = exit_station
   end
 
   def calculate_fare
-    @entry_station && @exit_station ? 1 : 6
+    incomplete_journey? ? 6 : 1
   end
 
+  private
+
+  def incomplete_journey?
+    !@entry_station || !@exit_station
+  end
 end 

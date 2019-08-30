@@ -10,16 +10,10 @@ describe JourneyLog do
   subject { described_class.new(journey_class: journey_class) }
 
   describe '#start' do
-
-  end
-
-  describe '#finish' do
-    it 'should finish a journey with an exit station' do
+    it 'should save a journey' do
       allow(journey_class).to receive(:new).and_return journey
       allow(journey).to receive(:enter).and_return entry_station
       subject.start(entry_station)
-      allow(journey).to receive(:exit).and_return entry_station  
-      subject.finish(exit_station)
       expect(subject.journeys).to include(journey)
     end
   end

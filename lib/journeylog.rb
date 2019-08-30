@@ -1,4 +1,4 @@
-
+require './lib/journey.rb'
 
 class JourneyLog
 
@@ -10,13 +10,16 @@ class JourneyLog
   end
 
   def start(entry_station)
+    @current_journey = nil
     current_journey.enter(entry_station)
     @journeys << current_journey
   end
 
   def finish(exit_station)
     current_journey.exit(exit_station)
-    @journeys << current_journey
+    # This journey should already be in journeys,
+    # but someone may forget to touch in so add if missing.
+    @journeys |= [current_journey]
     @current_journey = nil
   end
 
