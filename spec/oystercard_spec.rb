@@ -2,8 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
 
-  let(:station){double :station}
-  let(:station2){double :station2}
+  let(:entry_station) { double :entry_station }
+  let(:exit_station) { double :exit_station }
 
   describe 'card balance' do
 
@@ -25,50 +25,14 @@ describe Oystercard do
 
   describe 'journey' do
 
-    it { is_expected.to respond_to(:touch_in) }
-    it { is_expected.to respond_to(:touch_out) }
-
     it 'raises error if balance is below minimum on touch in' do
-      expect {subject.touch_in(station)}.to raise_error "Insufficient funds for journey"
+      expect {subject.touch_in(entry_station)}.to raise_error "Insufficient funds for journey"
     end
 
     it 'charges fare amount during touch out' do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in(station)
-      expect{ subject.touch_out(station2) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
-    end
-
-    it 'stores entry station on touch in' do
-      subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in(station)
-      expect(subject.journey_list[-1][:entry]).to eq(station)
-    end
-  end
-
-  describe 'jouney history' do
-
-    it 'has empty list of journeys by deafult' do
-      expect(subject.journey_list).to eq([])
-    end
-
-    it 'saves entry station to history' do
-      subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in(station)
-      expect(subject.journey_list[-1][:entry]).to eq(station)
-    end
-
-    it 'saves exit station to history' do
-      subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.journey_list[-1][:exit]).to eq(station)
-    end
-
-    it 'creates a single journey' do
-      subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in(station)
-      subject.touch_out(station)
-      expect(subject.journey_list[-1]).to include(:entry => station, :exit => station)
+      subject.touch_in(entry_station)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
     end
   end
 end
