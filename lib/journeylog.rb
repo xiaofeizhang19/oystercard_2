@@ -27,7 +27,11 @@ class JourneyLog
   private
 
   def current_journey
-    !!@current_journey ? @current_journey : @journey_class.new  
+    if @current_journey != nil
+      @current_journey
+    else 
+      @current_journey = @journey_class.new  
+    end 
   end
 end
 
