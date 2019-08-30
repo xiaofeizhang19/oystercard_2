@@ -2,7 +2,7 @@ require './lib/journey.rb'
 
 class JourneyLog
 
-  attr_reader :entry_station, :exit_station, :journey_class
+  attr_reader :journey_class
 
   def initialize(journey_class:)
     @journey_class = journey_class
