@@ -2,13 +2,15 @@ require 'journey'
 
 describe Journey do
 
-  let (:journey_1) { Journey.new('Holborn') }
-  let (:journey_2) { Journey.new(nil) }
+  let (:journey_1) { Journey.new }
+  let (:journey_2) { Journey.new }
   let (:exit_station) { double :exit_station }
+  let (:entry_station) { double :entry_station }
 
-  describe '#initialize' do
+  describe '#enter' do
     it 'takes entry station as a parameter' do
-      expect(journey_1.entry_station).to eq('Holborn')
+      journey_1.enter(entry_station)
+      expect(journey_1.entry_station).to eq(entry_station)
     end 
   end 
 
@@ -21,6 +23,7 @@ describe Journey do
 
   describe '#calculate_fare' do
     it 'outputs minimum fare for complete journey' do
+      journey_1.enter(entry_station)
       journey_1.exit(exit_station)
       expect(journey_1.calculate_fare).to eq(1)
     end
